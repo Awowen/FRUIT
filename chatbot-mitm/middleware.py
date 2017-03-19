@@ -15,7 +15,7 @@ print("-" * 40)
 facebook = "https://www.facebok.com"
 
 user_email = "robin.genolet@rgen.io"
-user_passwd = base64.b64decode(b'bGliZXJ0cjBsbEZhYjIwMTU=').decode("utf-8")
+user_passwd = base64.b64decode(b'FB_BASE64_PASSWD').decode("utf-8")
 
 own_name = "Robin Genolet"
 first_name = own_name.split(" ")[0]
@@ -137,15 +137,6 @@ send_messenger(bot_fb_id, "Hey babe")
 
 div_js_1 = driver.find_element_by_xpath('//*[@id="js_1"]')
 
-source = driver.page_source
-soup = BeautifulSoup(source)
-messages = soup.find("div", {"id":"js_1"})
-
-msgs = []
-for e in messages.find_all('div', {"class":"_1t_p clearfix"}):
-    pair = (first_name, e.text[len(first_name):])
-    msgs.append(pair)
-
 last_message_p1 = ""
 last_message_p2 = ""
 
@@ -180,6 +171,16 @@ def send_messages(list_msgs, p):
         send_messenger(fb_id, msg[1])
 
 while True:
+    source = driver.page_source
+    soup = BeautifulSoup(source)
+    messages = soup.find("div", {"id":"js_1"})
+    msgs = []
+    for e in messages.find_all('div', {"class":"_1t_p clearfix"}):
+        print(e.text)
+        pair = (first_name, e.text[len(first_name):])
+        print("pair:", pair)
+        msgs.append(pair)
+
     m1 = check_new_msg(1)
     print("m1:", m1)
     if m1:
@@ -192,11 +193,4 @@ while True:
 
 code.interact(local=locals())
 
-
-
-
-
-
-while True:
-    time.sleep(10)
 driver.quit()
